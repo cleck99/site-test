@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Invenção da Imprensa: Linha do Tempo Interativa</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        
+        /* Variáveis de Tema */
+        :root {
+            --primary-color: #5d4037; /* Marrom Histórico */
+            --secondary-color: #ffcc80; /* Amarelo Antigo */
+            --bg-body: #f5f5f5;
+            --bg-card: white;
+            --text-color: #333;
+        }
+
+        /* Reset e Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Botão de Filtro */
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #filter-button {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #filter-button:hover {
+            background-color: #ffb74d;
+        }
+        
+        #filter-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Linha do Tempo (Timeline) */
+        .timeline {
+            position: relative;
+        }
+
+        /* A Linha Vertical Central */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+            /* Versão mobile: linha à esquerda */
+            @media (max-width: 600px) {
+                left: 10px;
+            }
+        }
+
+        .timeline-item {
+            padding: 10px 0;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            opacity: 1; /* Padrão: visível */
+            transform: translateX(0);
+            transition: all 0.5s ease-in-out;
+        }
+
+        /* Esconder Itens */
+        .timeline-item.hidden {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* Eventos à Direita */
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 30px;
+            text-align: right;
+        }
+
+        /* Eventos à Esquerda */
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 30px;
+            text-align: left;
+        }
+
+        /* O Círculo de Ponto (Icon) */
+        .timeline-item::after {
+            content: '\f02d'; /* Ícone de Livro */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            right: -20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: 3px solid var(--secondary-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Altera o ponto para itens da Esquerda */
+        .timeline-item:nth-child(even)::after {
+            left: -20px;
+            right: auto;
+        }
+
+        /* Conteúdo do Card */
+        .timeline-content {
+            padding: 20px;
+            background-color: var(--bg-card);
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        .timeline-content .date {
+            color: var(--secondary-color);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Responsividade para Celulares */
+        @media (max-width: 600px) {
+            .timeline::before {
+                left: 10px; /* Linha à esquerda */
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 40px;
+                padding-right: 10px;
+                text-align: left;
+            }
+
+            .timeline-item:nth-child(even), 
+            .timeline-item:nth-child(odd) {
+                left: 0;
+                padding-right: 10px;
+            }
+
+            .timeline-item::after {
+                left: -3px; /* Ponto na linha */
+                right: auto;
+            }
+        
+        }
+    </style>
+    </head>
+<body>
+
+    <header>
+        <h1>CRISTIAN CORNO</h1>
+        <p>O CRIFRES DO CORNO DO CRISTIAN BOI</p>
+    </header>
+    <header>
+        <h3>
+            <img src="images.jfif" alt="">
+        </h3>
+    </header>
+    <main>
+        <div class="controls">
+            <button id="filter-button">Historia dos Chifres do Cristian</button>
+        </div>
+        
+        <section class="timeline" id="timeline">
+
+            <div class="timeline-item key-event">
+                <div class="timeline-content">
+                    <span class="date">c. 1400</span>
+                    <h2>Chifres da Thayane</h2>
+                    <p>Johannes Gensfleisch zur Laden zum Gutenberg nasce em Mainz, Alemanha. Sua formação como ourives seria crucial para a tecnologia da tipografia.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="date">Critian bandido</span>
+                    <h2>Critian bandido</h2>
+                    <p>Na Europa, a impressão com blocos de madeira para estampar imagens e textos curtos já era usada, mas era lenta e os blocos se desgastavam rapidamente.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item key-event">
+                <div class="timeline-content">
+                    <span class="date">c. 1440</span>
+                    <h2>Cristian Vagabundo</h2>
+                    <p>Gutenberg começa a desenvolver sua ideia em Estrasburgo: letras individuais de metal (tipos móveis) que poderiam ser rearranjadas para formar qualquer palavra.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="date">c. 1448</span>
+                    <h2>Retorno a Mainz e Parceria</h2>
+                    <p>Gutenberg retorna a Mainz e garante um empréstimo do rico comerciante Johann Fust, que se torna seu principal financiador para o projeto da prensa.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item key-event">
+                <div class="timeline-content">
+                    <span class="date">1450-1455</span>
+                    <h2>A Bíblia de 42 Linhas (Início)</h2>
+                    <p>O trabalho começa na obra-prima de Gutenberg. Ele cria uma liga metálica para os tipos, desenvolve uma tinta à base de óleo e adapta uma prensa de vinho para a impressão.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="date">1455</span>
+                    <h2>Disputa Legal</h2>
+                    <p>Fust processa Gutenberg por não ter pago o empréstimo, assumindo o controle da oficina e da maioria dos equipamentos e tipos, incluindo os da Bíblia.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item key-event">
+                <div class="timeline-content">
+                    <span class="date">c. 1455 - 1456</span>
+                    <h2>Conclusão da Bíblia</h2>
+                    <p>A Bíblia de 42 Linhas (B42) é concluída. É a primeira obra impressa em massa na Europa, marcando o início da Era da Impressão no Ocidente.</p>
+                </div>
+            </div>
+             <div>
+                <img src="" alt="">
+             </div>
+            
+        </section>
+    </main>
+
+    <script>
+        // 1. Seleção dos elementos do DOM
+        const filterButton = document.getElementById('filter-button');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        let isFiltered = false;
+
+        // 2. Função para alternar a visibilidade dos eventos
+        function toggleKeyEvents() {
+            isFiltered = !isFiltered;
+
+            timelineItems.forEach(item => {
+                const isKeyEvent = item.classList.contains('key-event');
+                
+                if (isFiltered) {
+                    // Se estiver filtrando, esconde os não-chave
+                    if (!isKeyEvent) {
+                        item.classList.add('hidden');
+                    }
+                    filterButton.textContent = "Mostrar Todos os Eventos";
+                } else {
+                    // Se não estiver filtrando, mostra todos
+                    item.classList.remove('hidden');
+                    filterButton.textContent = "Mostrar Apenas Eventos Chave";
+                }
+            });
+        }
+
+        // 3. Adiciona o Event Listener ao botão
+        filterButton.addEventListener('click', toggleKeyEvents);
+
+        console.log("Linha do Tempo Interativa Carregada.");
+        
+    </script>
+    <div>
+        <img src="images.jfif" alt="">
+    </div>
+    </body>
+</html>
